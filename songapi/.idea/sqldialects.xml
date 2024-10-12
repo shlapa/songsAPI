@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/db/migrations/20241010125302_new_songs_table.sql" dialect="PostgreSQL" />
+  </component>
+</project>

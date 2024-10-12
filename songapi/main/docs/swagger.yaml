@@ -1,0 +1,200 @@
+basePath: /
+definitions:
+  openapi.SongDetail:
+    properties:
+      link:
+        type: string
+      releaseDate:
+        type: string
+      text:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact: {}
+  description: API for managing songs with verses
+  title: Song API
+  version: "1.0"
+paths:
+  /addSong:
+    post:
+      description: Adds a new song with verses
+      parameters:
+      - description: Song data
+        in: body
+        name: songData
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      responses:
+        "200":
+          description: 'message: Song added successfully'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid input
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Add new song
+  /deleteSong:
+    delete:
+      description: Deletes a song based on query parameters
+      parameters:
+      - description: Song ID
+        in: query
+        name: id
+        type: string
+      - description: Release Date
+        in: query
+        name: releaseDate
+        type: string
+      - description: Song text
+        in: query
+        name: text
+        type: string
+      - description: Song link
+        in: query
+        name: link
+        type: string
+      responses:
+        "200":
+          description: 'message: Song deleted successfully'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete song
+  /getSong:
+    get:
+      description: Returns song details and verses based on song ID
+      parameters:
+      - description: Song ID
+        in: query
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/openapi.SongDetail'
+        "404":
+          description: Song not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get song by ID
+  /gettextWithPagination:
+    get:
+      description: Returns songs with pagination based on text search
+      parameters:
+      - description: Text to search for
+        in: query
+        name: text
+        type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/openapi.SongDetail'
+            type: array
+        "400":
+          description: Invalid input
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get song with pagination
+  /updateSong:
+    patch:
+      description: Updates song details and verses
+      parameters:
+      - description: Song ID
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: New Release Date
+        in: query
+        name: updateReleaseDate
+        type: string
+      - description: New Song Link
+        in: query
+        name: updateLink
+        type: string
+      - description: Verses to update
+        in: body
+        name: verses
+        required: true
+        schema:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+      responses:
+        "200":
+          description: 'message: Song updated successfully'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid input
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update song
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
